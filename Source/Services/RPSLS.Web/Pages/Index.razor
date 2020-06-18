@@ -45,7 +45,12 @@
                 else
                 {
                     <div class="subtitle-container">
-                        <h2 class="subtitle" @onclick="Logout">HELLO, @Username.ToUpperInvariant()</h2>
+                        <h2 class="subtitle">HELLO, @Username.ToUpperInvariant()</h2>
+                    </div>
+                    <div class="leaderboard-link">
+                        <div class="leaderboard-link-info">
+                            <a @onclick="Logout" href="">LOGOUT</a>
+                        </div>
                     </div>
                 }
 
@@ -118,11 +123,6 @@
 
     private void Logout()
     {
-        if (!string.IsNullOrWhiteSpace(Username))
-        {
-
-        }
-
-        NavigationManager.NavigateTo("/", true);
+        NavigationManager.NavigateTo("/api/account/logout", true);
     }
 }

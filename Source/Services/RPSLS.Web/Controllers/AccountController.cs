@@ -23,7 +23,7 @@ namespace RPSLS.Web.Controllers
         }
 
         [HttpGet("login/twitter")]
-        public IActionResult ExternalLogin([FromQuery]string redirectUrl)
+        public IActionResult ExternalLogin([FromQuery] string redirectUrl)
         {
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl ?? REDIRECT_URI };
             _logger.LogInformation($"Twitter login redirected to {properties.RedirectUri}");
@@ -31,7 +31,7 @@ namespace RPSLS.Web.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<IActionResult> Login([FromQuery]string username, [FromQuery]string redirectUrl)
+        public async Task<IActionResult> Login([FromQuery] string username, [FromQuery] string redirectUrl)
         {
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.Name, username)
@@ -42,6 +42,15 @@ namespace RPSLS.Web.Controllers
             await HttpContext.SignInAsync(principal);
             _logger.LogInformation($"Cookies login redirected to {redirectUrl ?? REDIRECT_URI}");
             return Redirect(redirectUrl ?? REDIRECT_URI);
+        }
+
+        [HttpGet("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            _logger.LogInformation($"Logout Completed");
+            return Redirect(REDIRECT_URI);
         }
     }
 }
